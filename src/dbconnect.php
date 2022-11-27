@@ -27,4 +27,3 @@ foreach ($choices as $key => $choice) {
   $questions[$index]["choices"][] = $choice;
 }
 // d($questions);
-
