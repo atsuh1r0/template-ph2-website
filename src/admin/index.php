@@ -48,36 +48,37 @@ require_once(dirname(__DIR__) ."/dbconnect.php");
           <a href="./">問題一覧</a>
           </li>
           <li class="menu__inner--list">
-          <a href="./">問題作成</a>
+          <a href="./questions/create.php">問題作成</a>
           </li>
         </ul>
       </nav>
 
       <section class="question-table-container">
         <h1 class="question-table__title">問題一覧</h1>
+        <?php if (empty($questions)): ?>
+          <p>問題がありません。</p>
+        <?php else: ?>
+          <table>
+            <tr>
+              <th>ID</th>
+              <th>問題</th>
+              <th></th>
+            </tr>
+            <?php foreach($questions as $index): ?>
+            <tr>
+              <td><?= $index['id'] ?></td>
+              <td>
+                <a href="./">
+                  <?= $index['content'] ?></td>
+                </a>
+              <td>
+                <a href="../services/delete_question.php?id=<?= $index['id'] ?>">削除</a>
+              </td>
+            </tr>
+            <? endforeach; ?>
+          </table>
+        <? endif; ?>
       </section>
-      <?php if (empty($questions)): ?>
-        <p>問題がありません。</p>
-      <?php else: ?>
-        <table>
-          <tr>
-            <th>ID</th>
-            <th>問題</th>
-            <th></th>
-          </tr>
-          <?php foreach($questions as $index): ?>
-            <td><?= $index['id'] ?></td>
-            <td>
-              <a href="./">
-                <?= $index['content'] ?></td>
-              </a>
-            <td>
-              <a href="./">削除</a>
-            </td>
-            <tr></tr>
-          <? endforeach; ?>
-        </table>
-      <? endif; ?>
     </div>
   </main>
   <!-- /.l-main -->
