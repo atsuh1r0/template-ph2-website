@@ -55,31 +55,33 @@ require_once(dirname(__DIR__) ."/../dbconnect.php");
 
       <section class="question-table-container">
         <h1 class="question-table__title">問題作成</h1>
-        <div>
-          <h2>問題文：</h2>
-          <input type="text" placeholder="問題文を入力してください">
-        </div>
-        <div>
-          <h2>選択肢：</h2>
-          <input type="text" placeholder="選択肢1を入力してください">
-          <input type="text" placeholder="選択肢2を入力してください">
-          <input type="text" placeholder="選択肢3を入力してください">
-        </div>
-        <div>
-          <h2>正解の選択肢</h2>
-          <input type="radio" name="choice" value="1">選択肢1
-          <input type="radio" name="choice" value="2">選択肢2
-          <input type="radio" name="choice" value="3">選択肢3
-        </div>
-        <div>
-          <h2>問題の画像</h2>
-          <input type="file">
-        </div>
-        <div>
-          <h2>補足：</h2>
-          <input type="text" placeholder="補足を入力してください">
-        </div>
-        <input type="submit" value="送信">
+        <form method="post" action="../../services/create_question.php" enctype="multipart/form-data">
+          <div>
+            <h2>問題文：</h2>
+            <input type="text" name="content" placeholder="問題文を入力してください">
+          </div>
+          <div>
+            <h2>選択肢：</h2>
+            <input type="text" name="choice1" placeholder="選択肢1を入力してください">
+            <input type="text" name="choice2" placeholder="選択肢2を入力してください">
+            <input type="text" name="choice3" placeholder="選択肢3を入力してください">
+          </div>
+          <div>
+            <h2>正解の選択肢</h2>
+            <input type="radio" name="choice" value="1">選択肢1
+            <input type="radio" name="choice" value="2">選択肢2
+            <input type="radio" name="choice" value="3">選択肢3
+          </div>
+          <div>
+            <h2>問題の画像</h2>
+            <input type="file" name="image">
+          </div>
+          <div>
+            <h2>補足：</h2>
+            <input type="text" name="supplement" placeholder="補足を入力してください">
+          </div>
+          <input type="submit" value="送信" />
+        </form>
       </section>
     </div>
   </main>
