@@ -24,8 +24,8 @@ try {
   for ($questionNum = 1; $questionNum <= 3; $questionNum++) {
     $stt = $dbh->prepare("INSERT INTO choices VALUE (NULL, :question_id, :name, :valid)");
     $stt->bindValue(":question_id", $question_id);
-    $stt->bindValue(":name", $_POST['choice'] . $questionNum);
-    if ($_POST['choice'] === $questionNum) {
+    $stt->bindValue(":name", $_POST['choice' . $questionNum]);
+    if ((int)$_POST['choice'] === $questionNum) {
       $stt->bindValue(":valid", 1);
     } else {
       $stt->bindValue(":valid", 0);
