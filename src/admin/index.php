@@ -68,7 +68,7 @@ require_once(dirname(__DIR__) ."/dbconnect.php");
             <tr>
               <td><?= $index['id'] ?></td>
               <td>
-                <a href="./">
+                <a href="./questions/edit.php?id=<?= $index['id'] ?>">
                   <?= $index['content'] ?></td>
                 </a>
               <td>
