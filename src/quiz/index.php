@@ -80,7 +80,7 @@ require_once(dirname(__DIR__) ."/dbconnect.php");
             <span class="p-quiz-box__question__title__text"><?= $questions[$questionNum]["content"]; ?></span>
           </h2>
           <figure class="p-quiz-box__question__image">
-            <img src="../assets/img/quiz/img-quiz0<?= $questionNum + 1 ?>.png" alt="">
+            <img src="../assets/img/quiz/<?= $questions[$questionNum]['image'] ?>" alt="">
           </figure>
         </div>
         <div class="p-quiz-box__answer">
