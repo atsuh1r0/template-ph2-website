@@ -6,9 +6,9 @@ if (!empty($_POST)) {
     // 登録処理
     $stt = $dbh->prepare("SELECT * FROM users WHERE email = :email AND password = :password");
     $stt->bindValue(":email", $_POST['email']);
-    $stt->bindValue(":password", $_POST['password']);
+    $stt->bindValue(":password", password_hash($_POST['password'], PASSWORD_DEFAULT));
     $stt->execute();
-    $user = $stt->fetch(PDO::FETCH_ASSOC);
+    $user = $stt->fetch();
     if (!empty($user)) {
       // ログイン成功
       session_start();

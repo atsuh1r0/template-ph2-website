@@ -52,7 +52,7 @@ if (!isset($_SESSION['id'])) {
       <nav class="menu__container">
         <ul class="menu__inner">
           <li class="menu__inner--list">
-            <a href="./">ユーザー招待</a>
+            <a href="./users/invitation.php">ユーザー招待</a>
           </li>
           <li class="menu__inner--list">
           <a href="./">問題一覧</a>
