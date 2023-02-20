@@ -1,5 +1,26 @@
 <?php
 require_once(dirname(__DIR__) ."../../dbconnect.php");
+
+if (!empty($_POST)) {
+  if(!empty($_POST['email']) && !empty($_POST['password'])) {
+    // 登録処理
+    $stt = $dbh->prepare("SELECT * FROM users WHERE email = :email AND password = :password");
+    $stt->bindValue(":email", $_POST['email']);
+    $stt->bindValue(":password", $_POST['password']);
+    $stt->execute();
+    $user = $stt->fetch(PDO::FETCH_ASSOC);
+    if (!empty($user)) {
+      // ログイン成功
+      session_start();
+      $_SESSION['id'] = $user["id"];
+      $_SESSION['name'] = $user["name"];
+      $message = "ログインに成功しました";
+      header('Location: ../index.php');
+    } else {
+      $errorMsg = 'ログインに失敗しました';
+    }
+  }
+}
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -33,14 +54,17 @@ require_once(dirname(__DIR__) ."../../dbconnect.php");
 
       <section class="question-table-container">
         <h1 class="question-table__title">ログイン</h1>
-        <form action="">
+        <? if (!empty($errorMsg)): ?>
+          <p class="error"><?= $errorMsg ?></p>
+        <? endif; ?>
+        <form action="" method="post">
           <div>
             <h2>Email</h2>
-            <input type="text" placeholder="example@posse.com">
+            <input type="text" name="email" placeholder="example@posse.com">
           </div>
           <div>
             <h3>パスワード</h3>
-            <input type="text" placeholder="password">
+            <input type="text" name="password" placeholder="password">
           </div>
           <input type="submit"  value="ログイン">
         </form>
