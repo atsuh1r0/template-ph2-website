@@ -1,6 +1,11 @@
 <?php
 require_once(dirname(__DIR__) ."/../dbconnect.php");
 $selectId = $_GET['id'] - 1;
+
+session_start();
+if (!isset($_SESSION['id'])) {
+  header('Location: /admin/auth/signin.php');
+}
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -29,6 +34,11 @@ $selectId = $_GET['id'] - 1;
     <div class="p-header__inner">
       <nav class="p-header__nav">
         <ul class="p-header__nav__list">
+          <? if (isset($_SESSION['name'])):?>
+            <li class="p-header__nav__item">
+              <p class="p-header__nav__item__link"><?= $_SESSION['name'] ?>さん</p>
+            </li>
+          <? endif; ?>
           <li class="p-header__nav__item">
             <a href="./" class="p-header__nav__item__link">ログアウト</a>
           </li>
