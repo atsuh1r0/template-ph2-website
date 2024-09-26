@@ -1,13 +1,18 @@
+<?php
+
+//ここにデータベースへの接続、検索などの処理をここに記述
+require_once(dirname(__DIR__) ."/dbconnect.php");
+?>
+
 <!DOCTYPE html>
 <html lang="ja">
-
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>POSSE 初めてのWeb制作</title>
   <!-- スタイルシート読み込み -->
-  <link rel="stylesheet" href="./assets/styles/common.css">
+  <link rel="stylesheet" href="../assets/styles/common.css">
   <!-- Google Fonts読み込み -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,20 +20,21 @@
     href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Plus+Jakarta+Sans:wght@400;700&display=swap"
     rel="stylesheet">
   <script src="../assets/scripts/common.js" defer></script>
+  <script src="../assets/scripts/quiz.js" defer></script>
 </head>
 
 <body>
   <header id="js-header" class="l-header p-header">
-    <div class="p-header__logo"><img src="./assets/img/logo.svg" alt="POSSE"></div>
+  <div class="p-header__logo"><img src="../assets/img/logo.svg" alt="POSSE"></div>
     <button class="p-header__button" id="js-headerButton"></button>
     <div class="p-header__inner">
       <nav class="p-header__nav">
         <ul class="p-header__nav__list">
           <li class="p-header__nav__item">
-            <a href="./" class="p-header__nav__item__link">POSSEとは</a>
+            <a href="../" class="p-header__nav__item__link">POSSEとは</a>
           </li>
           <li class="p-header__nav__item">
-            <a href="./quiz/" class="p-header__nav__item__link">クイズ</a>
+            <a href="./" class="p-header__nav__item__link">クイズ</a>
           </li>
         </ul>
       </nav>
@@ -56,64 +62,72 @@
       </ul>
     </div>
   </header>
-  <!-- /.l-header .p-header -->
-
   <main class="l-main">
-    <section class="p-top-hero">
-      <div class="p-top-hero__inner">
-        <div class="p-top-hero__body">
-          <h1 class="p-top-hero__body__title">学生プログラミングコミュニティ POSSE（ポッセ）</h1>
-          <span class="p-top-hero__body__catchcopy">自分史上最高<br>を仲間と。</span>
-        </div>
-        <picture class="p-top-hero__image">
-          <img src="./assets/img/img-hero.jpg" alt="">
-        </picture>
-        <div class="p-top-hero__scroll">Scroll Down</div>
+    <section class="p-hero p-quiz-hero">
+      <div class="l-container">
+        <h1 class="p-hero__title">
+          <span class="p-hero__title__label">POSSE課題</span>
+          <span class="p-hero__title__inline">ITクイズ</span>
+        </h1>
       </div>
     </section>
-    <!-- /.p-top-hero -->
-
-    <div class="p-top-container">
-      <section class="l-section p-top-about">
-        <div class="l-container">
-          <h2 class="p-heading">
-            POSSEとは<span class="p-heading__caption" lang="en" aria-hidden="true">About POSSE</span>
+    <div class="p-quiz-container l-container" id="js-quizContainer">
+    <?php for ($questionNum = 0; $questionNum < count($questions); $questionNum++): ?>
+      <section class="p-quiz-box js-quiz">
+        <div class="p-quiz-box__question">
+          <h2 class="p-quiz-box__question__title">
+            <span class="p-quiz-box__label">Q<?= $questionNum + 1 ?></span>
+            <span class="p-quiz-box__question__title__text"><?= $questions[$questionNum]["content"]; ?></span>
           </h2>
-          <div class="p-top-about__body">
-            <picture class="p-top-about__image">
-              <img src="./assets/img/img-about.jpg" alt="POSSEメンバー集合写真">
-            </picture>
-            <div class="p-top-about__content">
-              <p>
-                学生プログラミングコミュニティ「POSSE(ポッセ)」は、人格とプログラミング、二つの面での成長をスローガンに活動しており、大学生だけが集まって学びを深めるコミュニティです。<br>プログラミングだけではありません。オフラインでのイベントや、旅行など様々な企画を行っています！<br>それらを通じて、夏休みの大半をPOSSEで出来た仲間と過ごす人もたくさんいるほどメンバーとの仲が深まります。
-              </p>
+          <figure class="p-quiz-box__question__image">
+            <img src="../assets/img/quiz/<?= $questions[$questionNum]['image'] ?>" alt="">
+          </figure>
+        </div>
+        <div class="p-quiz-box__answer">
+          <span class="p-quiz-box__label p-quiz-box__label--accent">A</span>
+          <ul class="p-quiz-box__answer__list">
+            <?php for ($choiceNum = 0; $choiceNum < count($questions[$questionNum]['choices']); $choiceNum++): ?>
+              <li class="p-quiz-box__answer__item">
+                <button class="p-quiz-box__answer__button js-answer" data-correct="<?= $questions[$questionNum]["choices"][$choiceNum]['valid'] ?>">
+                <?= $questions[$questionNum]["choices"][$choiceNum]['name']; ?>
+                <i class="u-icon__arrow"></i>
+              </li>
+            <?php endfor; ?>
+          </ul>
+          <div class="p-quiz-box__answer__correct js-answerBox">
+            <p class="p-quiz-box__answer__correct__title js-answerTitle"></p>
+            <p class="p-quiz-box__answer__correct__content">
+              <span class="p-quiz-box__answer__correct__content__label">A</span>
+              <span class="js-answerText"></span>
+            </p>
+          </div>
+        </div>
+        <?php if(!empty($questions[$questionNum]['supplement'])): ?>
+          <cite class="p-quiz-box__note">
+            <i class="u-icon__note"></i>
+            <?= $questions[$questionNum]["supplement"]; ?>
+          </cite>
+        <?php endif; ?>
+      </section>
+    <?php endfor; ?>
+    </div>
+    <div class="p-line">
+      <div class="l-container">
+        <div class="p-line__body">
+          <div class="p-line__body__inner">
+            <h2 class="p-heading -light p-line__title"><i class="u-icon__line"></i>POSSE 公式LINE</h2>
+            <div class="p-line__content">
+              <p>公式LINEにてご質問を随時受け付けております。<br>詳細やPOSSE最新情報につきましては、公式LINEにてお知らせ致しますので<br>下記ボタンより友達追加をお願いします！</p>
+            </div>
+            <div class="p-line__footer">
+              <a href="https://line.me/R/ti/p/@651htnqp?from=page" target="_blank" rel="noopener noreferrer"
+              class="p-line__button">LINE追加<i class="u-icon__link"></i></a>
             </div>
           </div>
         </div>
-      </section>
-      <!-- /.l-section p-top-about -->
-    </div>
-  </main>
-  <!-- /.l-main -->
-
-  <div class="p-line">
-    <div class="l-container">
-      <div class="p-line__body">
-        <div class="p-line__body__inner">
-          <h2 class="p-heading -light p-line__title"><i class="u-icon__line"></i>POSSE 公式LINE</h2>
-          <div class="p-line__content">
-            <p>公式LINEにてご質問を随時受け付けております。<br>詳細やPOSSE最新情報につきましては、公式LINEにてお知らせ致しますので<br>下記ボタンより友達追加をお願いします！</p>
-          </div>
-          <div class="p-line__footer">
-            <a href="https://line.me/R/ti/p/@651htnqp?from=page" target="_blank" rel="noopener noreferrer"
-              class="p-line__button">LINE追加<i class="u-icon__link"></i></a>
-          </div>
-        </div>
       </div>
     </div>
-  </div>
-  <!-- /.p-line -->
-
+  </main>
   <footer class="l-footer p-footer">
     <div class="p-fixedLine">
       <a href="https://line.me/R/ti/p/@651htnqp?from=page" target="_blank" rel="noopener noreferrer"
@@ -126,7 +140,7 @@
     <div class="l-footer__inner">
       <div class="p-footer__siteinfo">
         <span class="p-footer__logo">
-          <img src="./assets/img/logo.svg" alt="POSSE">
+          <img src="../assets/img/logo.svg" alt="POSSE">
         </span>
         <a href="https://posse-ap.com/" target="_blank" rel="noopener noreferrer"
           class="p-footer__siteinfo__link">POSSE公式サイト</a>
@@ -152,8 +166,5 @@
       <small lang="en">©︎2022 POSSE</small>
     </div>
   </footer>
-  <!-- /.l-footer .p-footer -->
-
 </body>
-
 </html>
